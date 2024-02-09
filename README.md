@@ -34,6 +34,7 @@ pip install numpy scipy matplotlib plotly streamlit
 
 # Run the Streamlit app
 streamlit run app.py
+```
 
 # Usage
 After starting the Streamlit app, use the sidebar to input the parameters for the Option model:
