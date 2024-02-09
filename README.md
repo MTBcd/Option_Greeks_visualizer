@@ -10,27 +10,28 @@ Plotting of payoff diagrams for Call and Put options.
 Installation
 To run this project, you need to have Python installed on your system. It's recommended to use a virtual environment. Follow these steps to set up the environment and run the app:
 
-bash
-Copy code
-# Clone the repository
+# bash
+
+## Clone the repository
 git clone https://github.com/MTBcd/Option_Greeks_visualizer.git
 
-# Navigate to the repository directory
+## Navigate to the repository directory
 cd Option_Greeks_visualizer
 
-# (Optional) Create a virtual environment
+## (Optional) Create a virtual environment
 python -m venv venv
 
-# Activate the virtual environment
-# On Windows
+## Activate the virtual environment
+On Windows:
 .\venv\Scripts\activate
-# On Unix or MacOS
+
+On Unix or MacOS:
 source venv/bin/activate
 
-# Install the required packages
+## Install the required packages
 pip install numpy scipy matplotlib plotly streamlit
 
-# Run the Streamlit app
+## Run the Streamlit app
 streamlit run app.py
 
 # Usage
