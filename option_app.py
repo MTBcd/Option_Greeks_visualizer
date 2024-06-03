@@ -50,10 +50,9 @@ class BSPricing:
 
 class Greeks(BSPricing):
     def __init__(self, S, K, T, r, d, sigma):
-        super().__init__(S, K, T, r, d, sigma)  # Use super() for a cleaner call to the parent class constructor
+        super().__init__(S, K, T, r, d, sigma)
 
     def DeltaCall(self):
-        # Use self.D1() and self.N() to access the inherited methods
         DeltaCall = exp(-self.d * self.T) * self.N(self.D1())
         return DeltaCall
 
@@ -114,7 +113,6 @@ class Greeks(BSPricing):
         return VannaPut
 
     def plot_payoffs(self):
-        # Utilize np.linspace for generating S_range
         S_range = np.linspace(self.S * 0.8, self.S * 1.2, 100)
 
         # Calculate payoffs
@@ -133,13 +131,10 @@ class Greeks(BSPricing):
         plt.show()
 
     def plot_greeks(self):
-        # Generate a range of underlying prices
         S_range = np.linspace(self.S * 0.8, self.S * 1.2, 100)
 
-        # Temporarily store original stock price
         original_S = self.S
 
-        # Calculate Greeks for each price in the range
         deltas, gammas, vegas, thetas, rhos, vannas = [], [], [], [], [], []
         for S in S_range:
             self.S = S  # Update stock price for calculations
@@ -150,14 +145,11 @@ class Greeks(BSPricing):
             rhos.append(self.RhoCall())
             vannas.append(self.VannaCall())
 
-        # Reset stock price to original
         self.S = original_S
 
-        # Creating subplots
         fig, axs = plt.subplots(3, 2, figsize=(14, 10))  # Adjust the size as needed
         fig.suptitle('Greeks for Call Option Across Different Underlying Prices')
 
-        # Plotting each Greek in a subplot
         axs[0, 0].plot(S_range, deltas, label='Delta')
         axs[0, 0].set_title('Delta')
         axs[0, 0].grid(True)
@@ -195,19 +187,15 @@ def plot_greeks_call_with_plotly(option):
     # Define the range of underlying prices for plotting
     S_range = np.linspace(option.S * 0.7, option.S * 1.3, 200)
 
-    # Initialize a 3x2 subplot figure
     fig = make_subplots(rows=3, cols=2, subplot_titles=('Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Vanna'))
 
-    # Store the original value of S
     original_S = option.S
 
-    # Calculate and plot each Greek
     for i, (row, col) in enumerate([(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2)], start=1):
         greek_values = []
         for S in S_range:
-            option.S = S  # Temporarily set the stock price to S
+            option.S = S 
 
-            # Dynamically call the Greek method based on i
             if i == 1:
                 greek_values.append(option.DeltaCall())
             elif i == 2:
@@ -221,14 +209,11 @@ def plot_greeks_call_with_plotly(option):
             elif i == 6:
                 greek_values.append(option.VannaCall())
 
-        # Reset the stock price to the original value
         option.S = original_S
 
-        # Add the calculated Greek values to the subplot
         fig.add_trace(go.Scatter(x=S_range, y=greek_values, mode='lines',
                                  name=['Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Vanna'][i - 1]), row=row, col=col)
 
-    # Update layout
     fig.update_layout(height=900, width=800, title_text="Greeks Visualization Across Different Underlying Prices")
     return fig
 
@@ -236,19 +221,15 @@ def plot_greeks_put_with_plotly(option):
     # Define the range of underlying prices for plotting
     S_range = np.linspace(option.S * 0.7, option.S * 1.3, 200)
 
-    # Initialize a 3x2 subplot figure
     fig = make_subplots(rows=3, cols=2, subplot_titles=('Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Vanna'))
 
-    # Store the original value of S
     original_S = option.S
 
-    # Calculate and plot each Greek
     for i, (row, col) in enumerate([(1, 1), (1, 2), (2, 1), (2, 2), (3, 1), (3, 2)], start=1):
         greek_values = []
         for S in S_range:
-            option.S = S  # Temporarily set the stock price to S
+            option.S = S
 
-            # Dynamically call the Greek method based on i
             if i == 1:
                 greek_values.append(option.DeltaPut())
             elif i == 2:
@@ -262,26 +243,20 @@ def plot_greeks_put_with_plotly(option):
             elif i == 6:
                 greek_values.append(option.VannaPut())
 
-        # Reset the stock price to the original value
         option.S = original_S
 
-        # Add the calculated Greek values to the subplot
         fig.add_trace(go.Scatter(x=S_range, y=greek_values, mode='lines',
                                  name=['Delta', 'Gamma', 'Vega', 'Theta', 'Rho', 'Vanna'][i - 1]), row=row, col=col)
 
-    # Update layout
     fig.update_layout(height=900, width=800, title_text="Greeks Visualization Across Different Underlying Prices")
     return fig
 
 def plot_payoffs_with_plotly(option):
-    # Generate a range of underlying prices
     S_range = np.linspace(option.S * 0.7, option.S * 1.3, 200)
 
-    # Calculate payoffs
     call_payoffs = np.maximum(S_range - option.K, 0)
     put_payoffs = np.maximum(option.K - S_range, 0)
 
-    # Create Plotly figure
     fig = go.Figure()
     fig.add_trace(go.Scatter(x=S_range, y=call_payoffs, mode='lines', name='Call Payoff'))
     fig.add_trace(go.Scatter(x=S_range, y=put_payoffs, mode='lines', name='Put Payoff'))
@@ -289,7 +264,6 @@ def plot_payoffs_with_plotly(option):
     fig.update_layout(title='Option Payoff Diagrams', xaxis_title='Underlying Price (S)', yaxis_title='Payoff', legend_title='Option Type')
     return fig
 
-# Streamlit app layout starts here
 st.title('Option Greeks Visualizer')
 
 with st.sidebar:
@@ -345,6 +319,5 @@ if calculate:
     greeks_fig = plot_greeks_put_with_plotly(option)
     st.plotly_chart(greeks_fig, use_container_width=True)
 
-    # Plotting the payoffs
     payoffs_fig = plot_payoffs_with_plotly(option)
     st.plotly_chart(payoffs_fig, use_container_width=True)
